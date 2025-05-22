@@ -1,0 +1,19 @@
+{
+  "name": "arcit",
+  "version": "1.0.0",
+  "main": "index.js",
+  "bin": {
+    "arcit": "bin/index.js"
+  },
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["cli", "backend", "generator", "scaffolding", "node", "golang", "typescript"],
+  "author": "",
+  "license": "ISC",
+  "description": "A powerful CLI tool to scaffold backend projects with ready-to-use templates.",
+  "dependencies": {
+    "inquirer": "^12.6.1"
+  }
+}
