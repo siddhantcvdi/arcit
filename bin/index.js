@@ -11,6 +11,20 @@ const __dirname = path.dirname(__filename);
 
 const templates = {
   "node-js": "https://github.com/siddhantcvdi/node-js-template.git",
+  "node-js-auth": "https://github.com/siddhantcvdi/node-js-auth-template.git",
+};
+
+const templateConfigs = {
+  "node-js": {
+    deps: "express mongoose cookie-parser cors dotenv winston",
+    devDeps: "nodemon",
+    env: `PORT=5000\nNODE_ENV=development\nMONGO_URI=mongodb://localhost:27017/myapp\n`,
+  },
+  "node-js-auth": {
+    deps: "express mongoose cookie-parser cors dotenv winston jsonwebtoken bcryptjs",
+    devDeps: "nodemon",
+    env: `PORT=5000\nNODE_ENV=development\nMONGO_URI=mongodb://localhost:27017/myapp\nJWT_SECRET=your_super_secret_key_here\nJWT_EXPIRES_IN=7d\n`,
+  },
 };
 
 async function main() {
@@ -44,42 +58,28 @@ async function main() {
     console.log("\n📦 Initializing Node project...");
 
     try {
+      const config = templateConfigs[template];
+
       execSync("npm init -y", { cwd: projectPath, stdio: "inherit" });
 
-      // Modify package.json to set "type": "module"
+      // Modify package.json
       const packageJsonPath = path.join(projectPath, "package.json");
-      const packageJsonRaw = fs.readFileSync(packageJsonPath, "utf-8");
-      const packageJson = JSON.parse(packageJsonRaw);
+      const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"));
       packageJson.type = "module";
-
-      // Add scripts if not present
       packageJson.scripts = packageJson.scripts || {};
       packageJson.scripts.start = packageJson.scripts.start || "node server.js";
       packageJson.scripts.dev = packageJson.scripts.dev || "nodemon server.js";
-
       fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
 
-      // Install dependencies & devDependencies
-      execSync(
-        "npm install express mongoose cookie-parser cors dotenv winston",
-        { cwd: projectPath, stdio: "inherit" }
-      );
-      execSync(
-        "npm install -D nodemon",
-        { cwd: projectPath, stdio: "inherit" }
-      );
+      // Install dependencies
+      execSync(`npm install ${config.deps}`, { cwd: projectPath, stdio: "inherit" });
+      execSync(`npm install -D ${config.devDeps}`, { cwd: projectPath, stdio: "inherit" });
 
-      // Create a .env file with default content
-      const envContent = `PORT=5000
-NODE_ENV=development
-`;
-      fs.writeFileSync(path.join(projectPath, ".env"), envContent);
+      // Create .env
+      fs.writeFileSync(path.join(projectPath, ".env"), config.env);
 
-      // Create a .gitignore file
-      const gitignoreContent = `node_modules
-.env
-error.log
-`;
+      // Create .gitignore
+      const gitignoreContent = `node_modules\n.env\nerror.log\n`;
       fs.writeFileSync(path.join(projectPath, ".gitignore"), gitignoreContent);
 
     } catch (err) {

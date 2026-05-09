@@ -40,10 +40,10 @@ Run the command:
 arcit
 ```
 
-You’ll be prompted to:
+You'll be prompted to:
 
 - Enter your project name
-- Choose a template (e.g. node-js)
+- Choose a template
 
 The CLI will:
 
@@ -51,6 +51,15 @@ The CLI will:
 - Remove `.git` history
 - Initialize the project
 - Install required dependencies
+
+---
+
+## 📋 Templates
+
+| Template | Description | Stack |
+|---|---|---|
+| `node-js` | Bare Express + MongoDB starter | Express, Mongoose, Winston |
+| `node-js-auth` | Express + MongoDB + JWT auth | Express, Mongoose, JWT, bcrypt |
 
 ---
 
@@ -64,17 +73,23 @@ Prompt flow:
 
 ```
 ? Enter your project name: my-api
-? Choose a template: node-js
+? Choose a template: node-js-auth
 ```
 
 Output:
 
 ```
-📁 Creating project 'my-api' from 'node-js' template...
+📁 Creating project 'my-api' from 'node-js-auth' template...
 📦 Initializing Node project...
 ✅ Project 'my-api' is ready!
 ```
 
+The `node-js-auth` template comes with:
+- JWT-based auth (`register`, `login`, `GET /me`)
+- `protect` middleware for guarding routes
+- `User` model with bcrypt password hashing
+- Standardized `successResponse` / `errorResponse` utils
+- `.env` pre-configured with `JWT_SECRET` and `MONGO_URI`
 
 ---
 
@@ -83,8 +98,6 @@ Output:
 After generation, your project will have a clean folder structure, ready to code. You can fully customize it as per your stack and requirements.
 
 ---
-
-
 
 ## 🤝 Contributing
 
